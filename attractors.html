@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attractors</title>
+  <style>
+    html, body {
+      background: black;
+      color: #f0f0f0;
+      font-family: Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 32px;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+    }
+
+    .graph-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #f0f0f0;
+        background: black;
+        border-radius: 8px;
+        padding: 16px;
+        width: 500px;
+    }
+
+    canvas {
+      width: 480px;
+      height: 240px;
+      background: black;
+    }
+
+    .caption {
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <div class="graph-box">
+      <canvas id="tinkerbell" width="1000" height="500"></canvas>
+      <div class="caption">Tinkerbell Attractor (a=0.9, b=-0.6013, c=2.0, d=0.5)</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import init, { generate_tinkerbell } from "./pkg/tinkerbell.js";
+
+    async function run() {
+      await init();
+
+      const canvas = document.getElementById("tinkerbell");
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, width, height);
+
+      const points = generate_tinkerbell(235000);
+      const scaleX = 360;
+      const scaleY = 180;
+      const offsetX = width / 2 + 100;
+      const offsetY = height / 2 - 100;
+
+      ctx.globalAlpha = 0.06;
+      ctx.globalCompositeOperation = "source-over";
+
+      for (let i = 0; i < points.length; i += 2) {
+        const x = points[i] * scaleX + offsetX;
+        const y = -points[i + 1] * scaleY + offsetY;
+
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+          const ratio = i / points.length;
+          const hue = 250 - ratio * 100;
+          ctx.fillStyle = `hsl(${hue}, 100%, 65%)`;
+          ctx.fillRect(x, y, 1.1, 1.1);
+        }
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tinkerbell Attractor</title>
+  <title>software that loves you</title>
   <style>
     html, body {
       margin: 0;
@@ -10,57 +10,53 @@
       height: 100%;
       background: black;
       overflow: auto;
+      font-family: Helvetica, Arial, sans-serif;
+      color: #f0f0f0;
     }
-    canvas {
+    header {
+      padding: 24px 32px 12px;
+      font-size: 48px;
+      font-weight: 600;
+    }
+
+    nav {
+      padding: 0 64px 24px;
+    }
+
+    nav a {
+      font-family: Helvetica, Arial, sans-serif;
+      color: #f0f0f0;
+      text-decoration: none;
+      margin-right: 24px;
+      font-size: 24px;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: black;
-      display: block;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 1px;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
     }
   </style>
 </head>
 <body>
-  <canvas id="canvas" width="9600" height="4800" style="width: 4800px; height: 2400px;"></canvas>
-
-  <script type="module">
-    import init, { generate_tinkerbell } from "./pkg/tinkerbell.js";
-
-    async function run() {
-      await init();
-
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-      const width = canvas.width;
-      const height = canvas.height;
-
-      ctx.fillStyle = "black";
-      ctx.fillRect(0, 0, width, height);
-
-      const points = generate_tinkerbell(1350000);
-      const scaleX = 850;
-      const scaleY = 425;
-      const offsetX = width / 2 - 300;
-      const offsetY = height / 2;
-
-      ctx.globalAlpha = 0.06;
-      ctx.globalCompositeOperation = "source-over";
-
-      for (let i = 0; i < points.length; i += 2) {
-        const x = points[i] * scaleX + offsetX;
-        const y = -points[i + 1] * scaleY + offsetY;
-
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-          const ratio = i / points.length;
-          const hue = 250 - ratio * 100;
-          ctx.fillStyle = `hsl(${hue}, 100%, 65%)`;
-          ctx.fillRect(x, y, 1.1, 1.1);
-        }
-      }
-    }
-
-    run();
-  </script>
+  <header>
+    software that loves you
+  </header>
+  <nav>
+    <a href="attractors.html">Attractors</a>
+  </nav>
 </body>
 </html>
